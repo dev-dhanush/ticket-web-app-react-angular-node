@@ -1,0 +1,7 @@
+export const userCreatedSuccessfully = "User Created Successfully"
+export const userLoginSuccessfully = "Account login successfully"
+export const userSignOutSuccessfully = "Account sign out successfully"
+export const accessDenied = "Access denied"
+export const ticketCreatedSuccessfully = "Ticket Created Successfully"
+export const ticketUpdatedSuccessfully = "Ticket Updated Successfully"
+export const ticketDeletedSuccessfully = "Ticket Deleted Successfully"

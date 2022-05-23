@@ -1,0 +1,23 @@
+<form [formGroup]="add_ticket" (ngSubmit)="handleSubmit(add_ticket)" class="example-form">
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>Ticket Tile</mat-label>
+    
+    <input required formControlName="ticket_title" matInput #ticket_title maxlength="50" />
+    
+    <mat-hint align="start"> </mat-hint>
+    <mat-hint align="end">{{ ticket_title.value.length }} / 50</mat-hint>
+  </mat-form-field>
+  <br /><br />
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>Ticket Description</mat-label>
+
+    <input required formControlName="ticket_desc" matInput #ticket_desc maxlength="50" />
+    
+    <mat-hint align="start"> </mat-hint>
+    <mat-hint align="end">{{ ticket_desc.value.length }} / 50</mat-hint>
+  </mat-form-field>
+  <br />
+  <button mat-button mat-dialog-close type="reset" mat-stroked-button color="warn">Cancel</button>
+  &nbsp;
+  <button mat-button mat-dialog-close [disabled]="add_ticket.invalid" type="submit" mat-raised-button color="primary">Add</button>
+</form>
