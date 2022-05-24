@@ -6,7 +6,6 @@ const { NotAcceptable, NotFound } = httpError
 import "dotenv/config"
 
 export async function createService(data) {
-	console.log(data)
 	try {
 		let ticket = await prisma.ticket.create({
 			data: {
@@ -17,7 +16,6 @@ export async function createService(data) {
 		})
 		return ticket
 	} catch (error) {
-		console.log(error)
 		throw NotAcceptable("Ticket is not created. Try again later..")
 	}
 }
@@ -32,7 +30,6 @@ export async function updateService(id, data) {
 		})
 		return ticket
 	} catch (error) {
-		console.log(error)
 		throw NotAcceptable("Ticket is not updated. Try again later..")
 	}
 }
@@ -47,7 +44,6 @@ export async function deleteTicketService(id) {
 		})
 		return ticket
 	} catch (error) {
-		console.log(error)
 		throw NotAcceptable("Ticket is not deleted. Try again later..")
 	}
 }
@@ -64,7 +60,6 @@ export async function getAllService() {
 		})
 		return ticket
 	} catch (error) {
-		console.log(error)
 		throw NotFound("NO Ticket is available. Try again later..")
 	}
 }
@@ -74,7 +69,6 @@ export async function getByIdService(id) {
 		let ticket = await prisma.ticket.findMany({ where: { ticket_no: Number(id), isDeleted: false } })
 		return ticket
 	} catch (error) {
-		console.log(error)
 		throw NotFound("Ticket is not available. Create and Try again..")
 	}
 }

@@ -4,7 +4,7 @@ import AllTickets from "../components/Ticket/AllTicket"
 
 const Home = () => {
 	return (
-		<div className="container">
+		<div className="container-fluid">
 			<header className="jumbotron">{<AllTickets />}</header>
 		</div>
 	)

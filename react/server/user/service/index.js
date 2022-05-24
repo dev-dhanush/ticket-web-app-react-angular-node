@@ -10,7 +10,7 @@ import "dotenv/config"
 import bcryptjs from 'bcryptjs';
 const { hashSync, compareSync } = bcryptjs;
 
-import { signAccessToken } from "../utils/jwt.js"
+import { signAccessToken } from "../../utils/jwt.js"
 
 export async function register(data) {
 	data.password = hashSync(data.password, 8)
@@ -23,9 +23,8 @@ export async function register(data) {
 	return data
 }
 
-export async function login(data) {
+export async function signin(data) {
 	const { email, password } = data
-	console.log(data)
 	const user = await prisma.user.findUnique({
 		where: {
 			email: email,
@@ -35,7 +34,7 @@ export async function login(data) {
 		throw NotFound("User not registered")
 	}
 	const checkPassword = compareSync(password, user.password)
-	if (!checkPassword) throw Unauthorized("Email address or password not valid")
+	if (!checkPassword) throw Unauthorized("Password not valid")
 	delete user.password
 	const accessToken = await signAccessToken(user)
 	return { ...user, accessToken }
