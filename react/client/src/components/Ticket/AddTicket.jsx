@@ -1,13 +1,5 @@
 import React, { useState } from "react"
-import {
-	Box,
-	Button,
-	TextField,
-	Dialog,
-	DialogActions,
-	DialogContent,
-	DialogTitle,
-} from "@material-ui/core"
+import { Box, Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core"
 import { useNavigate } from "react-router-dom"
 import { addTicketAction, fetchAllTickets } from "./ticketAction"
 import { useDispatch } from "react-redux"
@@ -49,21 +41,11 @@ export default function AddTicket(props) {
 
 	return (
 		<div>
-			<Button
-				disabled={props.error ? true : false}
-				variant="outlined"
-				style={{ fontSize: 15 }}
-				onClick={handleClickOpen}
-				color="primary"
-			>
+			<Button disabled={props.error ? true : false} variant="outlined" style={{ fontSize: 15 }} onClick={handleClickOpen} color="primary">
 				Add Ticket
 			</Button>
 
-			<Dialog
-				open={open}
-				onClose={handleClose}
-				aria-labelledby="form-dialog-title"
-			>
+			<Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
 				<DialogTitle id="form-dialog-title">Add Ticket</DialogTitle>
 				<Box component="form" onSubmit={formik.handleSubmit}>
 					<DialogContent>
@@ -78,14 +60,9 @@ export default function AddTicket(props) {
 							fullWidth
 							value={formik.values.ticket_title}
 							onChange={formik.handleChange}
-							error={
-								formik.touched.ticket_title &&
-								Boolean(formik.errors.ticket_title)
-							}
-							helperText={
-								formik.touched.ticket_title &&
-								formik.errors.ticket_title
-							}
+							error={formik.touched.ticket_title && Boolean(formik.errors.ticket_title)}
+							helperText={formik.touched.ticket_title && formik.errors.ticket_title}
+							inputProps={{ maxLength: 50 }}
 						/>
 						<TextField
 							required
@@ -97,14 +74,9 @@ export default function AddTicket(props) {
 							fullWidth
 							value={formik.values.ticket_desc}
 							onChange={formik.handleChange}
-							error={
-								formik.touched.ticket_desc &&
-								Boolean(formik.errors.ticket_desc)
-							}
-							helperText={
-								formik.touched.ticket_desc &&
-								formik.errors.ticket_desc
-							}
+							error={formik.touched.ticket_desc && Boolean(formik.errors.ticket_desc)}
+							helperText={formik.touched.ticket_desc && formik.errors.ticket_desc}
+							inputProps={{ maxLength: 50 }}
 						/>
 					</DialogContent>
 					<DialogActions>

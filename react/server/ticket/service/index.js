@@ -48,18 +48,26 @@ export async function deleteTicketService(id) {
 	}
 }
 
-export async function getAllService() {
+export async function getAllService({ page, size, sort }) {
 	try {
 		let ticket = await prisma.ticket.findMany({
+			skip: page * size - size,
+			take: parseInt(size),
 			where: {
 				isDeleted: false,
 			},
 			include: {
-				author:true
+				author: true,
 			},
+			orderBy: [
+				{
+					ticket_no: sort,
+				},
+			],
 		})
 		return ticket
 	} catch (error) {
+		console.log("Error is \n\n\\n\n\n", error)
 		throw NotFound("NO Ticket is available. Try again later..")
 	}
 }

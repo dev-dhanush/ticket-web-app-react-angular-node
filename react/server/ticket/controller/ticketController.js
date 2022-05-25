@@ -32,11 +32,38 @@ export const deleteTicket = async (req, res) => {
 
 export const getAll = async (req, res) => {
 	try {
-		const ticket = await getAllService()
+		let { page, size, sort } = req.query
+		!page ? (page = 1) : parseInt(page)
+		!size ? (size = 10) : parseInt(size)
+		sort === "asc" ? (sort = "asc") : (sort = "desc")
+		
+		const ticket = await getAllService({ page, size, sort })
 		success_controller(res, true, "", ticket)
 	} catch (error) {
 		error_controller(res, error)
 	}
+
+	// /** new */
+	// try {
+	// 	let { page, size, sort } = req.query
+
+	// 	if (!page) {
+	// 		page = 1
+	// 	}
+	// 	if (!size) {
+	// 		size = 10
+	// 	}
+	// 	const limit = parseInt(size)
+	// 	const user = await User.find().sort({ votes: 1, _id: 1 }).limit(limit)
+	// 	res.send({
+	// 		page,
+	// 		size,
+	// 		Info: user,
+	// 	})
+	// } catch (error) {
+	// 	res.sendStatus(500)
+	// }
+	// /** new end */
 }
 
 export const getById = async (req, res) => {

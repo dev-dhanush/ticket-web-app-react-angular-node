@@ -32,9 +32,7 @@ function descendingComparator(a, b, orderBy) {
 	return 0
 }
 function getComparator(order, orderBy) {
-	return order === "desc"
-		? (a, b) => descendingComparator(a, b, orderBy)
-		: (a, b) => -descendingComparator(a, b, orderBy)
+	return order === "desc" ? (a, b) => descendingComparator(a, b, orderBy) : (a, b) => -descendingComparator(a, b, orderBy)
 }
 function stableSort(array, comparator) {
 	const stabilizedThis = array.map((el, index) => [el, index])
@@ -74,25 +72,10 @@ function EnhancedTableHead(props) {
 			<TableRow>
 				<TableCell padding="checkbox"></TableCell>
 				{headCells.map((headCell) => (
-					<TableCell
-						key={headCell.id}
-						align={headCell.numeric ? "right" : "left"}
-						padding={headCell.disablePadding ? "none" : "normal"}
-						sortDirection={orderBy === headCell.id ? order : false}
-					>
-						<TableSortLabel
-							active={orderBy === headCell.id}
-							direction={orderBy === headCell.id ? order : "asc"}
-							onClick={createSortHandler(headCell.id)}
-						>
+					<TableCell key={headCell.id} align={headCell.numeric ? "right" : "left"} padding={headCell.disablePadding ? "none" : "normal"} sortDirection={orderBy === headCell.id ? order : false}>
+						<TableSortLabel active={orderBy === headCell.id} direction={orderBy === headCell.id ? order : "asc"} onClick={createSortHandler(headCell.id)}>
 							{headCell.label}
-							{orderBy === headCell.id ? (
-								<span className={classes.visuallyHidden}>
-									{order === "desc"
-										? "sorted descending"
-										: "sorted ascending"}
-								</span>
-							) : null}
+							{orderBy === headCell.id ? <span className={classes.visuallyHidden}>{order === "desc" ? "sorted descending" : "sorted ascending"}</span> : null}
 						</TableSortLabel>
 					</TableCell>
 				))}
@@ -115,7 +98,7 @@ const useStyles = makeStyles((theme) => ({
 		marginBottom: theme.spacing(2),
 	},
 	table: {
-		minWidth: 750,
+		minWidth: 650,
 	},
 	visuallyHidden: {
 		border: 0,
@@ -182,8 +165,7 @@ export default function EnhancedTable() {
 		dispatch(deleteTic(id))
 		dispatch(fetchAllTickets())
 	}
-	const emptyRows =
-		rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage)
+	const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage)
 
 	return (
 		<div className={classes.root}>
@@ -196,63 +178,31 @@ export default function EnhancedTable() {
 			{!error && (
 				<Paper className={classes.paper}>
 					<TableContainer>
-						<Table
-							className={classes.table}
-							aria-labelledby="tableTitle"
-							size={dense ? "small" : "medium"}
-							aria-label="enhanced table"
-						>
-							<EnhancedTableHead
-								classes={classes}
-								order={order}
-								orderBy={orderBy}
-								onRequestSort={handleRequestSort}
-								rowCount={rows.length}
-							/>
+						<Table className={classes.table} aria-labelledby="tableTitle" size={dense ? "small" : "medium"} aria-label="enhanced table">
+							<EnhancedTableHead classes={classes} order={order} orderBy={orderBy} onRequestSort={handleRequestSort} rowCount={rows.length} />
 							<TableBody>
 								{stableSort(rows, getComparator(order, orderBy))
-									.slice(
-										page * rowsPerPage,
-										page * rowsPerPage + rowsPerPage
-									)
+									.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 									.map((row, index) => {
 										const labelId = `enhanced-table-checkbox-${index}`
 
 										return (
-											<TableRow
-												hover
-												role="checkbox"
-												tabIndex={-1}
-												key={row.ticket_no}
-											>
+											<TableRow hover role="checkbox" tabIndex={-1} key={row.ticket_no}>
 												<TableCell padding="checkbox"></TableCell>
-												<TableCell
-													component="th"
-													id={labelId}
-													scope="row"
-													padding="none"
-												>
+												<TableCell component="th" id={labelId} scope="row" padding="none">
 													{row.ticket_no}
 												</TableCell>
-												<TableCell align="right">
-													{row.ticket_title}
-												</TableCell>
-												<TableCell align="right">
-													{row.ticket_desc}
-												</TableCell>
-												<TableCell align="right">
-													{row.author.username}
-												</TableCell>
+												<TableCell align="right">{row.ticket_title}</TableCell>
+												<TableCell align="right">{row.ticket_desc}</TableCell>
+												<TableCell align="right">{row.author.username}</TableCell>
 												<TableCell align="right">
 													<Tooltip
 														onClick={() => {
-															handleDelete(
-																row.ticket_no
-															)
+															handleDelete(row.ticket_no)
 														}}
 														title="Delete"
 													>
-														<IconButton aria-label="delete">
+														<IconButton size="small" aria-label="delete">
 															<DeleteIcon />
 														</IconButton>
 													</Tooltip>
@@ -260,12 +210,8 @@ export default function EnhancedTable() {
 
 												<TableCell align="right">
 													<Tooltip title="Update">
-														<IconButton aria-label="edit">
-															<EditTicket
-																ticket_no={
-																	row.ticket_no
-																}
-															/>
+														<IconButton size="small" aria-label="edit">
+															<EditTicket ticket_no={row.ticket_no} />
 														</IconButton>
 													</Tooltip>
 												</TableCell>
@@ -275,8 +221,7 @@ export default function EnhancedTable() {
 								{emptyRows > 0 && (
 									<TableRow
 										style={{
-											height:
-												(dense ? 33 : 53) * emptyRows,
+											height: (dense ? 13 : 53) * emptyRows,
 										}}
 									>
 										<TableCell colSpan={6} />
@@ -285,15 +230,7 @@ export default function EnhancedTable() {
 							</TableBody>
 						</Table>
 					</TableContainer>
-					<TablePagination
-						rowsPerPageOptions={[5, 10, 25]}
-						component="div"
-						count={rows.length}
-						rowsPerPage={rowsPerPage}
-						page={page}
-						onPageChange={handleChangePage}
-						onRowsPerPageChange={handleChangeRowsPerPage}
-					/>
+					<TablePagination rowsPerPageOptions={[5, 10, 25]} component="div" count={rows.length} rowsPerPage={rowsPerPage} page={page} onPageChange={handleChangePage} onRowsPerPageChange={handleChangeRowsPerPage} />
 				</Paper>
 			)}
 			<div
@@ -303,12 +240,7 @@ export default function EnhancedTable() {
 					flexDirection: "row",
 				}}
 			>
-				<FormControlLabel
-					control={
-						<Switch checked={dense} onChange={handleChangeDense} />
-					}
-					label="Dense padding"
-				/>
+				<FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label="Dense padding" />
 				<AddTicket error={error} />
 			</div>
 		</div>
