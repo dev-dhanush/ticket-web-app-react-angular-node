@@ -30,6 +30,7 @@ export async function updateService(id, data) {
 		})
 		return ticket
 	} catch (error) {
+		console.log("error index ticker", error)
 		throw NotAcceptable("Ticket is not updated. Try again later..")
 	}
 }
@@ -48,22 +49,18 @@ export async function deleteTicketService(id) {
 	}
 }
 
-export async function getAllService({ page, size, sort }) {
+export async function getAllService() {
 	try {
 		let ticket = await prisma.ticket.findMany({
-			skip: page * size - size,
-			take: parseInt(size),
 			where: {
 				isDeleted: false,
 			},
 			include: {
 				author: true,
 			},
-			orderBy: [
-				{
-					ticket_no: sort,
-				},
-			],
+			orderBy: {
+				ticket_no: "desc",
+			},
 		})
 		return ticket
 	} catch (error) {
