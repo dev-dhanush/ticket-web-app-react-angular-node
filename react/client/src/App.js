@@ -1,11 +1,6 @@
 import React, { useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import {
-	Route,
-	Link,
-	Routes,
-	BrowserRouter,
-} from "react-router-dom"
+import { Route, Link, Routes, BrowserRouter } from "react-router-dom"
 
 import "bootstrap/dist/css/bootstrap.min.css"
 import "./App.css"
@@ -15,6 +10,7 @@ import Register from "./components/auth/Register"
 import Home from "./components/Home"
 
 import { logout } from "./components/slice/authSlice"
+import NotFound from "./components/NotFound"
 
 const App = () => {
 	const { user: currentUser } = useSelector((state) => state.auth)
@@ -42,11 +38,7 @@ const App = () => {
 					{currentUser ? (
 						<div className="navbar-nav ml-auto">
 							<li className="nav-item">
-								<a
-									href="/login"
-									className="nav-link"
-									onClick={logOut}
-								>
+								<a href="/login" className="nav-link" onClick={logOut}>
 									LogOut
 								</a>
 							</li>
@@ -70,10 +62,11 @@ const App = () => {
 
 				<div>
 					<Routes>
-						<Route exact path="/" element={<Home/>} />
-						<Route exact path="/ticket" element={<Home/>} />
-						<Route exact path="/login" element={<Login/>} />
-						<Route exact path="/register" element={<Register/>} />
+						<Route exact path="/" element={<Home />} />
+						<Route exact path="/ticket" element={<Home />} />
+						<Route exact path="/login" element={<Login />} />
+						<Route exact path="/register" element={<Register />} />
+						<Route path="*" element={<NotFound />} />
 					</Routes>
 				</div>
 			</div>

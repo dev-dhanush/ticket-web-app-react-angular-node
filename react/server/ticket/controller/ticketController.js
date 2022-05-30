@@ -54,7 +54,11 @@ export const getAll = async (req, res) => {
 		const orderBy = query.orderBy ? query.orderBy : "ticket_no"
 		const sort = query.sort === "asc" ? "asc" : "desc"
 		const order = {}
-		order[orderBy] = sort
+		if (orderBy === "author.username") {
+			order["author"] = { username: sort }
+		} else {
+			order[orderBy] = sort
+		}
 
 		// filter
 		const where = { isDeleted: false }

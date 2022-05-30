@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import MaterialTable from "material-table"
 
 // Import Material Icons
@@ -18,6 +18,7 @@ import Remove from "@material-ui/icons/Remove"
 import SaveAlt from "@material-ui/icons/SaveAlt"
 import Search from "@material-ui/icons/Search"
 import ViewColumn from "@material-ui/icons/ViewColumn"
+
 import axios from "axios"
 import { authHeader } from "../slice/authSlice"
 import { useDispatch } from "react-redux"
@@ -43,9 +44,7 @@ const tableIcons = {
 }
 
 const App = () => {
-	// render() {
 	const dispatch = useDispatch()
-	// Material Table Columns
 	const columns = [
 		{ title: "Id", field: "ticket_no", editable: "never" },
 		{ title: "Title", field: "ticket_title", validate: (rowData) => rowData.ticket_title !== "" && !(rowData.ticket_title.length >= 50) },
