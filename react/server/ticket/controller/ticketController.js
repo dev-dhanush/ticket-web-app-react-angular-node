@@ -37,10 +37,8 @@ export const getAll = async (req, res) => {
 	try {
 		const query = req.query
 		const page = parseInt(query.page) || 1
-		const limit = parseInt(query.limit) || 2
-		// const last_page = req.query.last_page
+		const limit = parseInt(query.limit) || 10
 		const startIndex = (page - 1) * limit
-		// const endIndex = page * limit
 		const result = {}
 		const totalCount = await prisma.ticket.count({
 			where: {
@@ -54,7 +52,7 @@ export const getAll = async (req, res) => {
 		const orderBy = query.orderBy ? query.orderBy : "ticket_no"
 		const sort = query.sort === "asc" ? "asc" : "desc"
 		const order = {}
-		if (orderBy === "author.username") {
+		if (orderBy === "author") {
 			order["author"] = { username: sort }
 		} else {
 			order[orderBy] = sort
@@ -65,6 +63,8 @@ export const getAll = async (req, res) => {
 		if (query.ticket_no) where["ticket_no"] = { equals: parseInt(query.ticket_no) }
 		if (query.ticket_title) where["ticket_title"] = { startsWith: query.ticket_title }
 		if (query.ticket_desc) where["ticket_desc"] = { startsWith: query.ticket_desc }
+		let author = { select: { username: true } }
+		if (query.author) author = { username: { statesWith: query.author } }
 
 		try {
 			if (page < 0) {
@@ -77,10 +77,10 @@ export const getAll = async (req, res) => {
 					page: page + 1,
 					limit: limit,
 				}
-				result.paginateData = await prisma.ticket.findMany({
+				result.data = await prisma.ticket.findMany({
 					take: limit,
 					skip: startIndex,
-					where: where,
+					where,
 					select: {
 						ticket_desc: true,
 						author: {
@@ -93,7 +93,7 @@ export const getAll = async (req, res) => {
 					orderBy: [order],
 				})
 				res.paginatedResult = result
-				result.currentCountPerPage = Object.keys(result.paginateData).length
+				result.currentCountPerPage = Object.keys(result.data).length
 				result.range = currentPage * limit
 				return res.status(200).json(result)
 			} else {
@@ -104,6 +104,7 @@ export const getAll = async (req, res) => {
 			return res.status(500).json(err)
 		}
 	} catch (error) {
+		console.error(error)
 		error_controller(res, error)
 	}
 }

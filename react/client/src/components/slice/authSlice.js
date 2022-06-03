@@ -36,9 +36,11 @@ export const register = createAsyncThunk("auth/register", ({ username, email, pa
 export const login = createAsyncThunk("auth/login", async ({ email, password }, thunkAPI) => {
 	try {
 		const data = await AuthService.login(email, password)
+		console.log("data authSlice", data)
 		return data
 	} catch (error) {
 		thunkAPI.dispatch(setMessage(error.toString()))
+		console.log("thunkAPI rejectwith Value", thunkAPI.rejectWithValue)
 		return thunkAPI.rejectWithValue()
 	}
 })
@@ -55,6 +57,7 @@ const authSlice = createSlice({
 	reducers: {
 		login_fulfilled: (state, action) => {
 			state.isLoggedIn = true
+			console.log("action payload slice =>", action.payload)
 			state.user = action.payload
 		},
 		login_rejected: (state, action) => {

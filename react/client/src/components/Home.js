@@ -1,11 +1,11 @@
 import React from "react"
 
-import Ticket from "./Ticket/Table"
+import AllTickets from "../components/Ticket/AllTicket"
 
 const Home = () => {
 	return (
 		<div className="container-fluid">
-			<header className="jumbotron">{<Ticket />}</header>
+			<header className="jumbotron">{<AllTickets />}</header>
 		</div>
 	)
 }

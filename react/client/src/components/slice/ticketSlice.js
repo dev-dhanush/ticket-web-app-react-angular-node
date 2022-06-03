@@ -7,6 +7,7 @@ const initialState = {
 	replyTicketError: "",
 	selectedTicket: {},
 	replyMsg: "",
+	totalRowCount: 0,
 }
 
 const ticketListSlice = createSlice({
@@ -20,17 +21,27 @@ const ticketListSlice = createSlice({
 			state.tickets = state.tickets.filter((tic) => tic.ticket_no !== action.payload)
 		},
 		fetchTicketSuccess: (state, action) => {
-			state.tickets = action.payload
+			state.tickets = action.payload.data
+			state.parameter = {
+				...state.parameter,
+				totalCount: action.payload.totalCount,
+				limit: action.payload.currentCountPerPage,
+				page: action.payload.currentPage,
+				pageLimit: action.payload.next.limit,
+			}
 			state.isLoading = false
 		},
 		fetchTicketFail: (state, { payload }) => {
 			state.isLoading = false
 			state.error = payload
 		},
+		updateTotalRowCount: (state, action) => {
+			state.totalRowCount = action.payload
+		},
 		updateTicketSuccess: (state, action) => {
 			state.tickets = state.tickets.map((ticket) => {
 				if (ticket.ticket_no === action.payload.ticket_no) {
-					return {...ticket,...action.payload}
+					return { ...ticket, ...action.payload }
 				} else {
 					return ticket
 				}
@@ -94,6 +105,26 @@ const ticketListSlice = createSlice({
 
 const { reducer, actions } = ticketListSlice
 
-export const { updateTicketFail, updateTicketSuccess, fetchTicketLoading,addTicketFail,addTicketSuccess, deleteTicket, fetchTicketSuccess, fetchTicketFail, fetchSingleTicketLoading, fetchSingleTicketSuccess, fetchSingleTicketFail, replyTicketLoading, replyTicketSuccess, replyTicketFail, closeTicketLoading, closeTicketSuccess, closeTicketFail, resetResponseMsg } = actions
+export const {
+	updateTicketFail,
+	updateTicketSuccess,
+	fetchTicketLoading,
+	addTicketFail,
+	addTicketSuccess,
+	deleteTicket,
+	fetchTicketSuccess,
+	fetchTicketFail,
+	updateTotalRowCount,
+	fetchSingleTicketLoading,
+	fetchSingleTicketSuccess,
+	fetchSingleTicketFail,
+	replyTicketLoading,
+	replyTicketSuccess,
+	replyTicketFail,
+	closeTicketLoading,
+	closeTicketSuccess,
+	closeTicketFail,
+	resetResponseMsg,
+} = actions
 
 export default reducer
