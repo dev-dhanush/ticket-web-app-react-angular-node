@@ -1,16 +1,6 @@
 import axios from "axios"
 import { authHeader } from "../slice/authSlice"
-import {
-	addTicketSuccess,
-	addTicketFail,
-	fetchTicketLoading,
-	updateTicketFail,
-	updateTicketSuccess,
-	fetchTicketSuccess,
-	fetchTicketFail,
-	deleteTicket,
-	updateTotalRowCount,
-} from "../slice/ticketSlice"
+import { addTicketSuccess, addTicketFail, fetchTicketLoading, updateTicketFail, updateTicketSuccess, fetchTicketSuccess, fetchTicketFail, deleteTicket, updateTotalRowCount } from "../slice/ticketSlice"
 
 const user = localStorage.getItem("user")
 
@@ -66,6 +56,7 @@ export const fetchAllTickets = (parameter) => async (dispatch) => {
 				return dispatch(fetchTicketFail(result.response.statusText))
 			} else {
 				dispatch(updateTotalRowCount(result.totalCount))
+				console.log("result", result.data)
 				result.data.length && dispatch(fetchTicketSuccess(result))
 			}
 		} catch (error) {

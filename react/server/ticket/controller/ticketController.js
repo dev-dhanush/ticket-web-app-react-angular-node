@@ -63,8 +63,7 @@ export const getAll = async (req, res) => {
 		if (query.ticket_no) where["ticket_no"] = { equals: parseInt(query.ticket_no) }
 		if (query.ticket_title) where["ticket_title"] = { startsWith: query.ticket_title }
 		if (query.ticket_desc) where["ticket_desc"] = { startsWith: query.ticket_desc }
-		let author = { select: { username: true } }
-		if (query.author) author = { username: { statesWith: query.author } }
+		if (query.author) where["author"] = { username: query.author }
 
 		try {
 			if (page < 0) {

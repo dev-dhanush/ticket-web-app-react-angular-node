@@ -50,15 +50,9 @@ function EnhancedTableHead(props) {
 	return (
 		<TableHead>
 			<TableRow>
-				{/** Heading */}
 				<TableCell padding="checkbox"></TableCell>
 				{headCells.map((headCell) => (
-					<TableCell
-						key={headCell.id}
-						align={headCell.numeric ? "right" : "left"}
-						padding={headCell.disablePadding ? "none" : "normal"}
-						sortDirection={orderBy === headCell.id ? order : false}
-					>
+					<TableCell key={headCell.id} align={headCell.numeric ? "right" : "left"} padding={headCell.disablePadding ? "none" : "normal"} sortDirection={orderBy === headCell.id ? order : false}>
 						<TableSortLabel active={orderBy === headCell.id} direction={orderBy === headCell.id ? order : "asc"} onClick={createSortHandler(headCell.id)}>
 							{headCell.label}
 							{orderBy === headCell.id ? <span className={classes.visuallyHidden}>{order === "desc" ? "sorted descending" : "sorted ascending"}</span> : null}
@@ -160,33 +154,31 @@ export default function EnhancedTable() {
 
 	return (
 		<div className={classes.root}>
-			{error && (
+			{error ? (
 				<div className="alert alert-danger" role="alert">
-					{" "}
-					Error : {error}{" "}
+					Error:{error}
 				</div>
-			)}
-			{!error && (
+			) : null}
+			{!error ? (
 				<Paper className={classes.paper}>
-					{headCells.map(
-						(headCell) =>
-							["ticket_no", "ticket_title", "ticket_desc", "author"].includes(headCell.id) && (
-								<TableCell key={headCell.id} align={headCell.numeric ? "right" : "left"} padding={headCell.disablePadding ? "none" : "normal"}>
-									<Input
-										onKeyUp={(e) => {
-											if (e.key === "Enter") {
-												setFilter((prevState) => ({ ...prevState, [headCell.id]: e.target.value }))
-											}
-										}}
-										key={headCell.id}
-										startAdornment={
-											<InputAdornment position="start">
-												<FilterListIcon />
-											</InputAdornment>
+					{headCells.map((headCell) =>
+						["ticket_no", "ticket_title", "ticket_desc", "author"].includes(headCell.id) ? (
+							<TableCell key={headCell.id} align={headCell.numeric ? "right" : "left"} padding={headCell.disablePadding ? "none" : "normal"}>
+								<Input
+									onKeyUp={(e) => {
+										if (e.key === "Enter") {
+											setFilter((prevState) => ({ ...prevState, [headCell.id]: e.target.value }))
 										}
-									/>
-								</TableCell>
-							)
+									}}
+									key={headCell.id}
+									startAdornment={
+										<InputAdornment position="start">
+											<FilterListIcon />
+										</InputAdornment>
+									}
+								/>
+							</TableCell>
+						) : null
 					)}
 					<TableContainer>
 						<Table className={classes.table} aria-labelledby="tableTitle" size={dense ? "small" : "medium"} aria-label="enhanced table">
@@ -217,22 +209,20 @@ export default function EnhancedTable() {
 														</IconButton>
 													</Tooltip>
 												) : (
-													<Tooltip title="Delete">
-														<IconButton disabled aria-label="delete">
-															<DeleteIcon />
-														</IconButton>
-													</Tooltip>
+													// <Tooltip title="Delete">
+													<IconButton disabled aria-label="delete">
+														<DeleteIcon />
+													</IconButton>
+													// </Tooltip>
 												)}
 											</TableCell>
 
 											<TableCell align="left">
-												
-													<Tooltip title="Update">
-														<IconButton aria-label="edit">
-															<EditTicket authorId={row.authorId} currentUserId={currentUserId} ticket_no={row.ticket_no} />
-														</IconButton>
-													</Tooltip>
-												
+												<Tooltip title="Update">
+													<IconButton aria-label="edit">
+														<EditTicket authorId={row.authorId} currentUserId={currentUserId} ticket_no={row.ticket_no} />
+													</IconButton>
+												</Tooltip>
 											</TableCell>
 										</TableRow>
 									)
@@ -240,17 +230,9 @@ export default function EnhancedTable() {
 							</TableBody>
 						</Table>
 					</TableContainer>
-					<TablePagination
-						rowsPerPageOptions={[5, 10, 25]}
-						component="div"
-						count={totalRowCount}
-						rowsPerPage={rowsPerPage}
-						page={page}
-						onPageChange={handleChangePage}
-						onRowsPerPageChange={handleChangeRowsPerPage}
-					/>
+					<TablePagination rowsPerPageOptions={[5, 10, 25]} component="div" count={totalRowCount} rowsPerPage={rowsPerPage} page={page} onPageChange={handleChangePage} onRowsPerPageChange={handleChangeRowsPerPage} />
 				</Paper>
-			)}
+			) : null}
 			<div
 				style={{
 					display: "flex",
