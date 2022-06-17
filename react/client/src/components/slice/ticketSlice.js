@@ -53,7 +53,7 @@ const ticketListSlice = createSlice({
 			state.error = payload
 		},
 		addTicketSuccess: (state, action) => {
-			state.tickets.push(action.payload)
+			state.tickets.unshift(action.payload)
 		},
 		addTicketFail: (state, { payload }) => {
 			state.isLoading = false
