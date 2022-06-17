@@ -153,7 +153,7 @@ export default function EnhancedTable() {
 	}
 
 	return (
-		<div className={classes.root}>
+		<>
 			{error ? (
 				<div className="alert alert-danger" role="alert">
 					Error:{error}
@@ -168,6 +168,10 @@ export default function EnhancedTable() {
 									onKeyUp={(e) => {
 										if (e.key === "Enter") {
 											setFilter((prevState) => ({ ...prevState, [headCell.id]: e.target.value }))
+										}
+										if (e.target.value === "") {
+											setFilter()
+											console.log("filter", filter)
 										}
 									}}
 									key={headCell.id}
@@ -209,11 +213,9 @@ export default function EnhancedTable() {
 														</IconButton>
 													</Tooltip>
 												) : (
-													// <Tooltip title="Delete">
 													<IconButton disabled aria-label="delete">
 														<DeleteIcon />
 													</IconButton>
-													// </Tooltip>
 												)}
 											</TableCell>
 
@@ -243,6 +245,6 @@ export default function EnhancedTable() {
 				<FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label="Dense padding" />
 				<AddTicket para={{ order, orderBy, page, rowsPerPage, filter }} error={error} />
 			</div>
-		</div>
+		</>
 	)
 }

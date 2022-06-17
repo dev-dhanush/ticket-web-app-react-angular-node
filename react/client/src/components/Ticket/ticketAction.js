@@ -56,7 +56,6 @@ export const fetchAllTickets = (parameter) => async (dispatch) => {
 				return dispatch(fetchTicketFail(result.response.statusText))
 			} else {
 				dispatch(updateTotalRowCount(result.totalCount))
-				console.log("result", result.data)
 				result.data.length && dispatch(fetchTicketSuccess(result))
 			}
 		} catch (error) {

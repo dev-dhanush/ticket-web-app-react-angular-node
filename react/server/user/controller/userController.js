@@ -40,12 +40,3 @@ export async function signout(req, res) {
 	} catch (error) {}
 }
 
-export function isAuth(req, res, next) {
-	let user = req.profile && req.auth && req.profile._id == req.auth._id
-	if (!user) {
-		return res.status(403).json({
-			error: accessDenied,
-		})
-	}
-	next()
-}

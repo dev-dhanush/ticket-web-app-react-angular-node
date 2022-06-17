@@ -13,7 +13,7 @@ import "./App.css"
 import Login from "./components/auth/Login"
 import Register from "./components/auth/Register"
 import Home from "./components/Home"
-
+import NotFound from './components/NotFound/index.js'
 import { logout } from "./components/slice/authSlice"
 
 const App = () => {
@@ -74,6 +74,7 @@ const App = () => {
 						<Route exact path="/ticket" element={<Home/>} />
 						<Route exact path="/login" element={<Login/>} />
 						<Route exact path="/register" element={<Register/>} />
+						<Route path="*" element={<NotFound/>} />
 					</Routes>
 				</div>
 			</div>
